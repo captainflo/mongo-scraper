@@ -52,3 +52,23 @@ background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, F
     font-family: 'Cormorant', serif;
     font-size: 30px;
 }
+
+/* Card */
+.card{
+    margin: 20px;
+}
+.card-header a{
+    color: black;
+    font-family: 'Cormorant', serif;
+    font-size: 18px;
+}
+
+.card-header a:hover{
+    text-decoration: none;
+}
+
+.card-header button{
+    float:right;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
