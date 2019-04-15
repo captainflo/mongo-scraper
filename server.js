@@ -28,13 +28,13 @@ if(process.env.MONGODB_URI) {
     mongoose.connect("mongodb://localhost:27017/mongo-scraper", { useNewUrlParser: true });
 }
 // mongoose.connect("mongodb://heroku_zff3bnw1:7no24iunfu15m01sgsgpdhqj8i@ds139956.mlab.com:39956/heroku_zff3bnw1");
-var db = mongoose.connection;
-db.on('error',function(err){
-    console.log('Mongoose Error',err);
-});
-db.once('open', function(){
-    console.log("Mongoose connection is successful");
-});
+// var db = mongoose.connection;
+// db.on('error',function(err){
+//     console.log('Mongoose Error',err);
+// });
+// db.once('open', function(){
+//     console.log("Mongoose connection is successful");
+// });
 
 // Routes
 
@@ -52,27 +52,49 @@ axios.get("https://www.nytimes.com/").then(function(response) {
 
   // With cheerio, find each p-tag with the "title" class
   // (i: iterator. element: the current element)
-  $(".css-6p6lnl").each(function(i, element) {
+  $("article").each(function(i, element) {
     // Save the text of the element in a "title" variable
-    var title = $(element).children().text()
-    console.log(title);
+    var title = $(element).children(':first-child').find('h2').text();
     
     // In the currently selected element, look at its child elements (i.e., its a-tags),
     // then save the values for any "href" attributes that the child elements may have
-    var link = $(element).children("a").attr("href");
-    var text = $(element).children().text();
-
-
+    var link = $(element).children(':first-child').find('a').attr("href");
+    var text = $(element).children(':first-child').find('p').text() || $(element).children(':first-child').find('li').text() || "No Description";
+  
     // Save these results in an object that we'll push into the results array we defined earlier
     results.push({
       title: title,
       link: link,
       text: text
     });
+  //   // Create a new Article using the `result` object built from scraping
+  //   db.Article.create(results)
+  //   .then(function(dbArticle) {
+  //     // View the added result in the console
+  //     console.log(dbArticle);
+  //   })
+  //   .catch(function(err) {
+  //     // If an error occurred, log it
+  //     console.log(err);
+  //   });
   });
   // Log the results once you've looped through each of the elements found with cheerio
   res.json(results);
   });
+});
+
+// Route for getting all Articles from the db
+app.get("/articles", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article.find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
 });
 
 
