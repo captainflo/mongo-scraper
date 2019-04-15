@@ -67,16 +67,6 @@ axios.get("https://www.nytimes.com/").then(function(response) {
       link: link,
       text: text
     });
-  //   // Create a new Article using the `result` object built from scraping
-  //   db.Article.create(results)
-  //   .then(function(dbArticle) {
-  //     // View the added result in the console
-  //     console.log(dbArticle);
-  //   })
-  //   .catch(function(err) {
-  //     // If an error occurred, log it
-  //     console.log(err);
-  //   });
   });
   // Log the results once you've looped through each of the elements found with cheerio
   res.json(results);
@@ -84,11 +74,24 @@ axios.get("https://www.nytimes.com/").then(function(response) {
 });
 
 // Route for getting all Articles from the db
-app.get("/articles", function(req, res) {
+app.get("/saved", function(req, res) {
   // Grab every document in the Articles collection
   db.Article.find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for saving/updating an Article's associated Note
+app.post("/saved/:id", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  db.Article.create(req.body)
+    .then(function(dbArticle) {
       res.json(dbArticle);
     })
     .catch(function(err) {
