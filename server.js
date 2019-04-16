@@ -114,9 +114,35 @@ app.delete("/delete/:id", function(req, res) {
 });
 
 // Route for saving/updating an Note
-app.post("/saved/note/", function(req, res) {
+app.post("/saved/note/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
+    .then(function(dbNote) {
+      res.json(dbNote);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// show all the note
+app.get("/noteshow/", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  db.Note.find({})
+    .then(function(dbNote) {
+      res.json(dbNote);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    }); 
+});
+
+// Delete note
+app.delete("/deletenote/:id", function(req, res) {
+  // Remove Note the req.body to the entry
+  db.Note.findByIdAndRemove(req.params.id)
     .then(function(dbNote) {
       res.json(dbNote);
     })

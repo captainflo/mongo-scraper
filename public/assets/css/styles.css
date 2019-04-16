@@ -72,3 +72,13 @@ background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, F
     margin-left: 20px;
     margin-bottom: 20px;
 }
+
+/* Delete Button */
+.btn-outline-danger {
+    float: right;
+}
+
+textarea {
+    width: 100%;
+    border-radius: 8px;
+}
