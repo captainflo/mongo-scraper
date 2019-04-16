@@ -87,7 +87,7 @@ app.get("/saved", function(req, res) {
     });
 });
 
-// Route for saving/updating an Article's associated Note
+// Route for saving/updating an Article
 app.post("/saved/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Article.create(req.body)
@@ -99,6 +99,33 @@ app.post("/saved/:id", function(req, res) {
       res.json(err);
     });
 });
+
+// Route for Delete an Article
+app.delete("/delete/:id", function(req, res) {
+  // Remove Article the req.body to the entry
+  db.Article.findByIdAndRemove(req.params.id)
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for saving/updating an Note
+app.post("/saved/note/", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  db.Note.create(req.body)
+    .then(function(dbNote) {
+      res.json(dbNote);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 
 
 // Start the server
