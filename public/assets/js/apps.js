@@ -35,7 +35,7 @@ $(document).on("click", "#scrapeArticles", function() {
     })
       // With that done, add the note information to the page
       .then(function(data) {
-        $('#card-' + thisId).empty();
+        $('#card-' + thisId).remove();
         console.log(data);
       });
   });
@@ -52,7 +52,7 @@ $(document).on("click", "#scrapeArticles", function() {
       for (let i = 0; i < data.length; i++) {
       // The title of the article
       $("#articlesSaved").append("<div id='card-"+data[i]._id+"' class='card'><div class='card-header'><button data-id="+data[i]._id+" type='submit' class='Delete btn btn-outline-primary'>Delete Article</button><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal'>Article Note</button><a id='link-"+i+"' target='_blank' href='"+data[i].link+"'><h2  id='title-"+i+"'>"+ data[i].title + "</h2></a></div><div class='card-body'><blockquote class='blockquote mb-0'><footer id='text-"+i+"' class='text blockquote-footer'>"+data[i].text+"</footer></blockquote></div></div>");
-      
+      // Modal
       $("#showNote").append("</div><div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><h5 class='modal-title' id='exampleModalLabel'>Note for Article "+data[i].title+"</h5><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div><div class='modal-body'>Here My List NOTE<div><textarea id='text-note"+data[i]._id+"'></textarea></div></div><div class='modal-footer'><button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button><button data-note='"+data[i]._id+"' type='button' class='note btn btn-primary'>Save changes</button></div></div></div>");
       }
     });
@@ -78,9 +78,6 @@ $(document).on("click", "#scrapeArticles", function() {
       });
   });
 
-
-
-
   // Delete Article
   $(document).on("click", '.Delete', function(event) {
     event.preventDefault();
@@ -92,7 +89,7 @@ $(document).on("click", "#scrapeArticles", function() {
       // With that done, add the note information to the page
       .then(function(data) {
         console.log(data);
-        $('#card-' + thisId).empty(),
+        $('#card-' + thisId).remove(),
         console.log("Article have been deleted");
       });
   });
