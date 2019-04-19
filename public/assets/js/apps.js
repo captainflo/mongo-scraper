@@ -50,7 +50,7 @@ $(document).on("click", "#scrapeArticles", function() {
       console.log(data);
       for (let i = 0; i < data.length; i++) {
       // The title of the article
-      $("#articlesSaved").append("<div id='card-"+data[i]._id+"' class='card'><div class='card-header'><button data-id="+data[i]._id+" type='submit' class='Delete btn btn-outline-primary'>Delete Article</button><button type='button' class=' note-show btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-modal="+data[i]._id+">Launch demo modal</button><a id='link-"+i+"' target='_blank' href='"+data[i].link+"'><h2  id='title-"+i+"'>"+ data[i].title + "</h2></a></div><div class='card-body'><blockquote class='blockquote mb-0'><footer id='text-"+i+"' class='text blockquote-footer'>"+data[i].text+"</footer></blockquote></div></div>");
+      $("#articlesSaved").append("<div id='card-"+data[i]._id+"' class='card'><div class='card-header'><button data-id="+data[i]._id+" type='submit' class='Delete btn btn-outline-primary'>Delete Article</button><button type='button' class=' note-show btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-modal="+data[i]._id+">Note</button><a id='link-"+i+"' target='_blank' href='"+data[i].link+"'><h2  id='title-"+i+"'>"+ data[i].title + "</h2></a></div><div class='card-body'><blockquote class='blockquote mb-0'><footer id='text-"+i+"' class='text blockquote-footer'>"+data[i].text+"</footer></blockquote></div></div>");
       }
     });
 
@@ -91,6 +91,7 @@ $(document).on("click", "#scrapeArticles", function() {
         // With that done, add the note information to the page
         .then(function(data) {
           console.log(data);
+          $("#note-text").val('');
   
         });
     });
