@@ -87,6 +87,20 @@ app.get("/saved", function(req, res) {
     });
 });
 
+app.get("/saved/:id", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article.findOne({_id: req.params.id})
+    .populate("note")
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 // Route for saving/updating an Article
 app.post("/saved/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
@@ -118,6 +132,9 @@ app.post("/saved/note/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(function(dbNote) {
+      return db.Article.findOneAndUpdate({_id: req.params.id}, { $push: { note: dbNote._id }}, { new: true })
+    })
+    .then(function(dbNote) {
       res.json(dbNote);
     })
     .catch(function(err) {
@@ -125,6 +142,8 @@ app.post("/saved/note/:id", function(req, res) {
       res.json(err);
     });
 });
+
+
 
 // show all the note
 app.get("/noteshow/", function(req, res) {
